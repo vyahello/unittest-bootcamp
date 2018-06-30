@@ -1,4 +1,5 @@
 # Unittest bootcamp
+My own implementation of unittest bootcamp project is aimed on helping to comprehend a `unittest` framework by newcomers.
 Describes basics of unittest python testing framework.
 
 ## Table of contents
@@ -11,6 +12,7 @@ All home works from every chapter will be located in it's `test_home.py` file.
   - [Test case outcomes](#test-case-outcomes)
   - [Run every test case outcome](#run-every-test-case-outcome)
   - [Test case preconditions and postconditions](#test-case-preconditions-and-postconditions)
+  - [Additional materials](#additional-materials-for-chapter-one)
 - [Chapter two (write test suits)](#chapter-two-(write-test-suits))
   - [Basic test suite example](#basic-test-suite-example)
   - [Run test suite](#run-test-case(s))
@@ -19,6 +21,7 @@ All home works from every chapter will be located in it's `test_home.py` file.
   - [Group separate tests into one test suite](#group-separate-tests-into-one-test-suite)
   - [Group multiple test suite into one top level test suite](#group-multiple-test-suite-into-one-top-level-test-suite)
   - [Run every grouped test suite](#run-every-grouped-test-suite)
+  - [Additional materials](#additional-materials-for-chapter-two)
 - [Contributing](#contributing)
 
 ## Chapter one (write test cases)
@@ -403,6 +406,10 @@ class TestStringMethods(TestCase):
         self.assertTrue(upper_class_string.isupper())
         self.assertTrue(upper_method_string.isupper())
 ```
+### Additional materials for chapter one
+- [https://docs.python.org/3/library/unittest.html#](https://docs.python.org/3/library/unittest.html#)
+- [https://www.blog.pythonlibrary.org/2016/07/07/python-3-testing-an-intro-to-unittest/](https://www.blog.pythonlibrary.org/2016/07/07/python-3-testing-an-intro-to-unittest/)
+
 ## Chapter two (write test suits)
 This chapter consists basics of unittest test suits usage.
 ### Basic test suite example
@@ -561,8 +568,9 @@ if __name__ == '__main__':
   
 # Run top level test suite
 ~/unittest-bootcamp/chapter_two python test_suites.py
-
 ```
+### Additional materials for chapter two
+- [https://docs.python.org/3/library/unittest.html](https://docs.python.org/3/library/unittest.html)
 ## Contributing
 
 ### Setup
