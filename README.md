@@ -3,22 +3,23 @@ Describes basics of unittest python testing framework.
 
 ## Table of contents
 All home works from every chapter will be located in it's `test_home.py` file.
-- [Chapter one (write test cases)]()
-  - [Syntax convention]()
-  - [Basic test case example]()
-  - [Run test case(s)]()
-  - [Assertions]()
-  - [Test case outcomes]()
-  - [Run every test case outcome]()
-  - [Test case preconditions and postconditions]()
-- [Chapter two (write test suits)]()
-  - [Basic test suite example]()
-  - [Run test suite]()
-  - [Prepare test cases for next grouping into test suite]()
-  - [Group test cases into one test suite]()
-  - [Group separate tests into one test suite]()
-  - [Group multiple test suite into one top level test suite]()
-  - [Run every grouped test suite]()
+- [Chapter one (write test cases)](#chapter-one-(write-test-cases))
+  - [Syntax convention](#syntax-convention)
+  - [Basic test case example](#basic-test-case-example)
+  - [Run test case(s)](#run-test-case(s))
+  - [Assertions](#assertions)
+  - [Test case outcomes](#test-case-outcomes)
+  - [Run every test case outcome](#run-every-test-case-outcome)
+  - [Test case preconditions and postconditions](#test-case-preconditions-and-postconditions)
+- [Chapter two (write test suits)](#chapter-two-(write-test-suits))
+  - [Basic test suite example](#basic-test-suite-example)
+  - [Run test suite](#run-test-case(s))
+  - [Prepare test cases for next grouping into test suite](#prepare-test-cases-for-next-grouping-into-test-suite)
+  - [Group test cases into one test suite](#group-test-cases-into-one-test-suite)
+  - [Group separate tests into one test suite](#group-separate-tests-into-one-test-suite)
+  - [Group multiple test suite into one top level test suite](#group-multiple-test-suite-into-one-top-level-test-suite)
+  - [Run every grouped test suite](#run-every-grouped-test-suite)
+- [Contributing](#contributing)
 
 ## Chapter one (write test cases)
 This chapter consists basics of unittest test cases usage.
@@ -402,16 +403,166 @@ class TestStringMethods(TestCase):
         self.assertTrue(upper_class_string.isupper())
         self.assertTrue(upper_method_string.isupper())
 ```
-
-## Chapter two
+## Chapter two (write test suits)
 This chapter consists basics of unittest test suits usage.
 ### Basic test suite example
+```python
+# test_suite.py module
+
+from unittest import TestSuite, TestLoader, TextTestRunner
+from chapter_one.test_list import TestListMethods  # use test_list.py module from `Basic test case example` section in `chapter_one` puzzle
+
+
+def _test_suite() -> TestSuite:
+    test_suite: TestSuite = TestSuite()
+    tests :TestLoader = TestLoader().loadTestsFromTestCase(TestListMethods)
+    test_suite.addTests(tests)
+    return test_suite
+
+
+if __name__ == '__main__':
+    test_runner: TextTestRunner = TextTestRunner(verbosity=2)
+    test_runner.run(_test_suite())
+```
 ### Run test suite
+```bash
+# Run test suite - test_suite.py test module
+~/unittest-bootcamp/chapter_two python test_suite.py
+```
 ### Prepare test cases for next grouping into test suite
+```python
+# test_filter.py module
+
+from typing import List
+from unittest import TestCase
+
+
+class TestFilterOddNumbers(TestCase):
+    """ This test case filters odd numbers from a given sequence """
+
+    def test_with_basic_algorithm(self) -> None:
+        """ Test checks if odd numbers are filtered with basic algorithm """
+
+        odds: List[...] = list()
+        for n in range(1, 6):
+            if n % 2 != 0:
+                odds.append(n)
+        self.assertListEqual(odds, [1, 3, 5])
+
+    def test_with_list_comprehension(self):
+        """ Test checks if odd numbers are filtered with list comprehension """
+
+        self.assertListEqual([n for n in range(1, 6) if n % 2 != 0], [1, 3, 5])
+
+    def test_with_filter_function(self) -> None:
+        """ Test checks if odd numbers are filtered with 'filter' function """
+
+        def check_odds(n: int) -> bool:
+            if not n % 2:
+                return False
+            return True
+
+        self.assertListEqual(list(filter(check_odds, range(1, 6))), [1, 3, 5])
+
+
+class TestFilterEvenNumbers(TestCase):
+    """ This test case filters even numbers from a given sequence """
+
+    def test_with_basic_algorithm(self) -> None:
+        """ Test checks if even numbers are filtered with basic algorithm """
+
+        odds: List[...] = list()
+        for n in range(1, 6):
+            if n % 2 == 0:
+                odds.append(n)
+        self.assertListEqual(odds, [2, 4])
+
+    def test_with_list_comprehension(self):
+        """ Test checks if even numbers are filtered with list comprehension """
+
+        self.assertListEqual([n for n in range(1, 6) if n % 2 == 0], [2, 4])
+
+    def test_with_filter_function(self) -> None:
+        """ Test checks if even numbers are filtered with 'filter' function """
+
+        def check_evens(n: int) -> bool:
+            if n % 2:
+                return False
+            return True
+
+        self.assertListEqual(list(filter(check_evens, range(1, 6))), [2, 4])
+```
 ### Group test cases into one test suite
+```bash
+# test_filter_suite.py module
+
+from unittest import TestSuite, TestLoader, TextTestRunner
+from chapter_two.test_filter import TestFilterOddNumbers, TestFilterEvenNumbers
+
+
+def _test_suite() -> TestSuite:
+    test_suite: TestSuite = TestSuite()
+    for test_case in TestFilterOddNumbers, TestFilterEvenNumbers:
+        tests: TestLoader = TestLoader().loadTestsFromTestCase(test_case)
+        test_suite.addTests(tests)
+    return test_suite
+
+
+if __name__ == '__main__':
+    test_runner: TextTestRunner = TextTestRunner(verbosity=2)
+    test_runner.run(_test_suite())
+```
 ### Group separate tests into one test suite
+```python
+# test_filter_suite_separate_tests.py module
+
+from unittest import TestSuite, TextTestRunner
+from chapter_two.test_filter import TestFilterOddNumbers, TestFilterEvenNumbers
+
+
+def _test_suite() -> TestSuite:
+    test_suite: TestSuite = TestSuite()
+    for test_case in TestFilterOddNumbers, TestFilterEvenNumbers:
+        test_suite.addTest(test_case('test_with_basic_algorithm'))
+        test_suite.addTest(test_case('test_with_list_comprehension'))
+    return test_suite
+
+
+if __name__ == '__main__':
+    test_runner: TextTestRunner = TextTestRunner(verbosity=2)
+    test_runner.run(_test_suite())
+```
 ### Group multiple test suite into one top level test suite
+```python
+# test_filter_suites.py module
+
+from unittest import TestSuite, TestLoader, TextTestRunner
+from chapter_two.test_filter import TestFilterOddNumbers, TestFilterEvenNumbers
+
+
+def _test_suite() -> TestSuite:
+    filter_odds_suite: TestLoader = TestLoader().loadTestsFromTestCase(TestFilterOddNumbers)
+    filter_evens_suite: TestLoader = TestLoader().loadTestsFromTestCase(TestFilterEvenNumbers)
+    top_filter_suite: TestSuite = TestSuite([filter_odds_suite, filter_evens_suite])
+    return top_filter_suite
+
+
+if __name__ == '__main__':
+    test_runner: TextTestRunner = TextTestRunner(verbosity=2)
+    test_runner.run(_test_suite())
+```
 ### Run every grouped test suite
+```bash
+# Run simple test suite
+~/unittest-bootcamp/chapter_two python test_filter_suite.py
+  
+# Run test suite with separate tests from test cases
+~/unittest-bootcamp/chapter_two python test_filter_suite_with_separate_tests.py
+  
+# Run top level test suite
+~/unittest-bootcamp/chapter_two python test_suites.py
+
+```
 ## Contributing
 
 ### Setup
@@ -419,6 +570,6 @@ This chapter consists basics of unittest test suits usage.
 - configure Git for the first time after cloning with your name and email
   ```bash
   git config --local user.name "Volodymyr Yahello"
-  git config --local user.email "vjagello93@gmail.com"
+  git config --local user.email "vyahello@gmail.com"
   ```
 - `python3.6` is required to run the code
