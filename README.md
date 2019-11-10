@@ -1,5 +1,5 @@
 # Unittest bootcamp
-My own implementation of unittest bootcamp project is aimed on helping to comprehend a `unittest` framework by newcomers.
+Unittest bootcamp project is aimed on helping to comprehend a `unittest` framework by newcomers.
 Describes basics of unittest python testing framework.
 
 ## Table of contents
@@ -571,9 +571,8 @@ if __name__ == '__main__':
 ```
 ### Additional materials for chapter two
 - [https://docs.python.org/3/library/unittest.html](https://docs.python.org/3/library/unittest.html)
-## Contributing
 
-### Setup
+## Contributing
 - clone the repository
 - configure Git for the first time after cloning with your name and email
   ```bash
